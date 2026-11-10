@@ -1,0 +1,14 @@
+/data/*
+!/data/README.md
+/models/*
+!/models/tune20t.txt
+
+/submissions/
+/logs/
+
+.idea/
+.vscode/
+__pycache__/
+*.pyc
+.venv/
+.DS_Store

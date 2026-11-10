@@ -1,0 +1,18 @@
+[project]
+name = "pgk2-del-ml"
+version = "1.0.0"
+description = "DEL-ML workflow for the DREAM x CACHE Target 2035 PGK2 blind test"
+readme = "README.md"
+requires-python = "==3.12.*"
+license = { file = "LICENSE" }
+dependencies = [
+    "polars==1.44.2",
+    "numpy==2.5.3",
+    "lightgbm==4.7.0",
+    "rdkit==2026.3.6",
+    "scikit-learn==1.9.1",  # nothing in src/ imports it but `lgb.LGBMClassifier` needs it
+]
+
+[tool.uv]
+package = false
+python-preference = "only-managed"
