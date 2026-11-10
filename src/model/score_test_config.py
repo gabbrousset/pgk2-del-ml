@@ -67,6 +67,7 @@ def main() -> None:
         spw = cfg["scale_pos_weight"] or float((y == 0).sum() / max(1, (y == 1).sum()))
         print(f"pos {int(y.sum()):,}  neg {int((1 - y).sum()):,}  scale_pos_weight {spw:.3f}")
         m = lgb.LGBMClassifier(objective="binary", n_jobs=-1, verbosity=-1,
+            deterministic=True, force_row_wise=True,
             num_leaves=cfg["num_leaves"], learning_rate=cfg["learning_rate"],
             n_estimators=cfg["n_estimators"], min_child_samples=cfg["min_child_samples"],
             feature_fraction=cfg["feature_fraction"], lambda_l2=cfg["lambda_l2"],
