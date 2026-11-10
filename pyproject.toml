@@ -3,10 +3,10 @@ name = "pgk2-del-ml"
 version = "1.0.0"
 description = "DEL-ML workflow for the DREAM x CACHE Target 2035 PGK2 blind test"
 readme = "README.md"
-requires-python = "==3.12.*"
+requires-python = ">=3.12,<3.15"   # polars 1.44.2 installs on 3.15 and returns None from `Series.is_null()`
 license = { file = "LICENSE" }
 dependencies = [
-    "polars==1.44.2",
+    "polars==1.44.2",      # 2.x is what unblocks Python 3.15, and may move the picks
     "numpy==2.5.3",
     "lightgbm==4.7.0",
     "rdkit==2026.3.6",
