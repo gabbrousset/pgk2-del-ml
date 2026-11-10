@@ -67,7 +67,9 @@ def trainset(recipe: str, neg_ratio: int) -> pl.DataFrame:
     pos = df.filter(RECIPES[recipe])
     want = (pos.group_by("library").agg((pl.len() * neg_ratio).alias("n"))
                .to_dict(as_series=False))
-    neg = sample_enumeration(dict(zip(want["library"], want["n"])),
+    # sorted, because group_by returns its groups in no fixed order and the
+    # per-library draw order sets the row order of the training frame
+    neg = sample_enumeration(dict(sorted(zip(want["library"], want["n"]))),
                              set(df["SMILES"].to_list()))
     hard = df.filter((pl.col("sup_count_NTC") >= 1) & ~RECIPES[recipe])
     neg = pl.concat([neg.select("SMILES", "library", "count_PGK2"),
@@ -75,4 +77,5 @@ def trainset(recipe: str, neg_ratio: int) -> pl.DataFrame:
     return pl.concat([
         pos.select("SMILES", "library", "count_PGK2").with_columns(y=pl.lit(1, pl.Int8)),
         neg.with_columns(y=pl.lit(0, pl.Int8)),
-    ]).unique(subset="SMILES", keep="first")
+    # maintain_order, or the row order varies per run and moves LightGBM's bin sample
+    ]).unique(subset="SMILES", keep="first", maintain_order=True)
